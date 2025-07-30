@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+.python-version
+env/
+venv/
+.venv/
+virtualenv/
+pip-selfcheck.json
+
+# 项目运行生成的目录（非常重要！）
+tmp/
+www/
+xgo/
+uploads/
+cache/
+
+# 环境变量和配置文件（防止泄露密码）
+.env
+.env.local
+config/secrets.py
+*.key
+*.pem
+
+# 日志文件
+*.log
+logs/
+
+# 操作系统和编辑器文件
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Docker（保留 Dockerfile，但忽略构建缓存等）
+.dockerignore
+compose.yaml
+docker-compose.yaml
+
+# Git 自身不要忽略
+!.gitignore
