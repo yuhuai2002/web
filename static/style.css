@@ -1,0 +1,89 @@
+/* style.css */
+
+/* 全局样式 */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* 导航栏 */
+.navbar {
+    background-color: #000;
+    overflow: hidden;
+    display: flex;
+}
+
+.navbar button {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 14px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    flex: 1;
+    transition: background-color 0.3s ease;
+}
+
+.navbar button:hover {
+    background-color: red;
+}
+
+/* 内容区 */
+.content {
+    padding: 40px;
+    text-align: center;
+}
+
+/* 上传区域 */
+.upload-section {
+    border: 2px dashed #ccc;
+    padding: 40px;
+    width: 60%;
+    margin: 20px auto;
+    position: relative;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+}
+
+/* 上传标题 */
+.upload-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* 上传图标 */
+.upload-icon {
+    font-size: 60px;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.upload-icon:hover {
+    color: #555;
+}
+
+/* 隐藏文件输入框 */
+#fileInput {
+    display: none;
+}
+
+/* 进度条容器 */
+.progress-bar {
+    margin-top: 20px;
+    height: 20px;
+    background-color: #eee;
+    border-radius: 5px;
+    overflow: hidden;
+    display: none;
+}
+
+/* 进度条填充 */
+.progress-bar-fill {
+    height: 100%;
+    width: 0;
+    background-color: green;
+    transition: width 0.3s ease;
+}

@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+.python-version
+env/
+venv/
+venv1/
+.venv/
+virtualenv/
+pip-selfcheck.json
+
+# 临时文件夹（你有 tmp 和 www，很可能是上传文件用的）
+tmp/
+www/
+uploads/
+files/
+
+# 环境变量（如果有）
+.env
+.env.local
+config/secrets.py
+*.key
+*.pem
+
+# 日志
+*.log
+logs/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Docker（虽然有 Dockerfile 要保留，但容器生成的不要）
+.dockerignore
+compose.yaml
+docker-compose.yaml
+.Dockerfile
+
+# Shell 脚本生成的临时文件
+*.sh.bak
+*.bak
+
+# 其他可能的缓存
+cache/
+sessions/

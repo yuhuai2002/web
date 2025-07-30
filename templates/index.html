@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <meta charset="UTF-8">
+    <title>自助表单填充</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            background-color: #000;
+            overflow: hidden;
+            display: flex;
+        }
+        .navbar button {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            flex: 1;
+        }
+        .navbar button:hover {
+            background-color: red;
+        }
+        .content {
+            padding: 40px;
+            text-align: center;
+        }
+        .upload-section {
+            border: 2px dashed #ccc;
+            padding: 40px;
+            width: 60%;
+            margin: 20px auto;
+            position: relative;
+            background-color: #f9f9f9;
+        }
+        .upload-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .upload-icon {
+            font-size: 60px;
+            color: #aaa;
+            cursor: pointer;
+        }
+        #fileInput {
+            display: none;
+        }
+        .progress-bar {
+            margin-top: 20px;
+            height: 20px;
+            background-color: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+            display: none;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0;
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <button onclick="showPage('form')">自助表单填充</button>
+    <button onclick="showPage('export')">导出报关表</button>
+    <button onclick="showPage('notice')">BtoC</button>
+    <button onclick="showPage('btn4')">按钮四</button>
+    <button onclick="showPage('btn5')">按钮五</button>
+</div>
+<div class="content">
+    <div id="form" class="page">
+        <div style="text-align: right; padding: 20px;">
+        <button id="downloadBtn" style="padding: 12px 24px; font-size: 18px; display: none;">保存到本地</button>
+    </div>
+        <div class="upload-section" id="uploadBox">
+            <div class="upload-title">文件上传</div>
+            <label for="fileInput">
+                <div class="upload-icon">+</div>
+            </label>
+            <input type="file" id="fileInput">
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+        </div>
+    </div>
+
+  <div id="export" class="page" style="display: none;">
+    <button id="saveBtn" style="margin-top: 20px; padding: 10px 20px;">保存修改</button>
+    <button id="dl" style="margin-top: 20px; padding: 10px 20px;">下载到本地</button>
+
+    <!-- 使用 flexbox 来对齐标题和按钮 -->
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="flex: 1; text-align: center;">导出报关表</h2>
+        
+    </div>
+
+    <div style="overflow-x:auto; width: 100%;">
+    <table border="1" cellspacing="0" cellpadding="8" style="min-width: 1200px;">
+    <thead>
+    <tr>
+        <th>Mawb</th>
+        <th>Order No</th>
+        <th>CTN MARKS</th>
+        <th>Reference</th>
+        <th>Reference 2</th>
+        <th>Internal Account Number</th>
+        <th>Shipper Name</th>
+        <th>Shipper Address 1</th>
+        <th>Shipper Address 2</th>
+        <th>Shipper Address 3</th>
+        <th>Shipper City</th>
+        <th>Shipper State</th>
+        <th>Shipper Postcode</th>
+        <th>Shipper Country Code</th>
+        <th>Shipper Turn</th>
+        <th>Consignee Name</th>
+        <th>Consignee Address1</th>
+        <th>Consignee Address2</th>
+        <th>Consignee Address3</th>
+        <th>Consignee City</th>
+        <th>Consignee State</th>
+        <th>Consignee Postcode</th>
+        <th>Consignee Country Code</th>
+        <th>Consignee Email</th>
+        <th>Consignee Telephone Number</th>
+        <th>Consignee Turn</th>
+        <th>Consignee VAT Reg No</th>
+        <th>Deferment</th>
+        <th>GROSS WEIGHT</th>
+        <th>Pieces</th>
+        <th>Weight UOM</th>
+        <th>Item Value</th>
+        <th>Net Weight</th>
+        <th>Currency</th>
+        <th>Incoterms</th>
+        <th>Item Description</th>
+        <th>Item HS Code</th>
+        <th>Item Quantity</th>
+        <th>Total Value</th>
+        <th>Country Of Origin</th>
+        <th>Vendor</th>
+    </tr>
+</thead>
+    <tbody id="dataTableBody">
+        <tr><td colspan="5">加载中...</td></tr>
+    </tbody>
+    </table>
+</div>
+
+    <div id="pagination" style="text-align: center; margin-top: 20px;"></div>
+</div>
+
+<script>
+    // 下载按钮点击事件
+    document.getElementById('downloadBtn').addEventListener('click', function () {
+        window.location.href = '/download';
+    });
+</script>
+
+
+
+
+</script>
+<script>
+    function showPage(id) {
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(page => page.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+    }
+
+    const uploadBox = document.getElementById('uploadBox');
+    const fileInput = document.getElementById('fileInput');
+    const progressBar = document.getElementById('progressBar');
+    const progressFill = document.getElementById('progressFill');
+
+    uploadBox.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        uploadBox.style.backgroundColor = '#e0e0e0';
+    });
+
+    uploadBox.addEventListener('dragleave', function (e) {
+        e.preventDefault();
+        uploadBox.style.backgroundColor = '#f9f9f9';
+    });
+
+    uploadBox.addEventListener('drop', function (e) {
+        e.preventDefault();
+        uploadBox.style.backgroundColor = '#f9f9f9';
+        const file = e.dataTransfer.files[0];
+        if (file) uploadFile(file);
+    });
+
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) uploadFile(file);
+    });
+
+    function uploadFile(file) {
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append('file', file);
+
+        xhr.open('POST', '/upload', true);
+
+        xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+                const percent = (e.loaded / e.total) * 100;
+                progressBar.style.display = 'block';
+                progressFill.style.width = percent + '%';
+            }
+        };
+
+        xhr.onload = function () {
+            progressBar.style.display = 'none';
+            if (xhr.status === 200) {
+                alert('上传成功,请等待30秒,文件处理完毕后会自动下载');
+
+
+                 // ✅ 新增：上传成功后自动触发“保存到本地”按钮的点击事件
+                document.getElementById('downloadBtn').click();
+            } else {
+                alert('上传失败');
+            }
+        };
+
+        xhr.onerror = function () {
+            progressBar.style.display = 'none';
+            alert('上传失败');
+        };
+
+        xhr.send(formData);
+    }
+    let currentPage = 1;
+let totalPages = 1;
+
+
+function renderEditableTable(data) {
+    const tbody = document.getElementById('dataTableBody');
+    tbody.innerHTML = '';
+
+    data.forEach((row, rowIndex) => {
+        const tr = document.createElement('tr');
+
+        row.forEach((cell, cellIndex) => {
+            const td = document.createElement('td');
+            td.contentEditable = true; // 可编辑
+            td.innerText = cell || '';
+            tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+    });
+}
+
+function loadTableData(page = 1) {
+    fetch(`/data?page=${page}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(res => {
+            if (!res.success) {
+                alert('数据加载失败：' + res.message);
+                return;
+            }
+
+            // 存储当前页面数据用于后续保存
+            window.currentData = res.data;
+
+            // 调用新的渲染函数（替换原来的渲染逻辑）
+            renderEditableTable(res.data);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            alert('数据加载失败：网络错误');
+        });
+}
+
+function updatePagination() {
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+
+    const createPageButton = (label, page) => {
+        const btn = document.createElement('button');
+        btn.textContent = label;
+        btn.style.margin = '0 4px';
+        btn.onclick = () => loadTableData(page);
+        if (page === currentPage) {
+            btn.style.fontWeight = 'bold';
+        }
+        return btn;
+    };
+
+    if (currentPage > 1) {
+        pagination.appendChild(createPageButton('第一页', 1));
+        pagination.appendChild(createPageButton('上一页', currentPage - 1));
+    }
+
+    const startPage = Math.max(1, currentPage - 3);
+    const endPage = Math.min(totalPages, currentPage + 3);
+    for (let i = startPage; i <= endPage; i++) {
+        pagination.appendChild(createPageButton(i, i));
+    }
+
+    if (currentPage < totalPages) {
+        pagination.appendChild(createPageButton('下一页', currentPage + 1));
+        pagination.appendChild(createPageButton('最后一页', totalPages));
+    }
+}
+// 点击后保存更新
+document.getElementById('saveBtn').addEventListener('click', () => {
+    const tbody = document.getElementById('dataTableBody');
+    const rows = tbody.querySelectorAll('tr');
+    const newData = [];
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const rowData = [];
+        cells.forEach(cell => {
+            rowData.push(cell.innerText.trim());
+        });
+        newData.push(rowData);
+    });
+
+    fetch('/save-data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: newData })
+    }).then(res => res.json())
+      .then(result => {
+          if (result.success) {
+              alert('保存成功！');
+          } else {
+              alert('保存失败：' + result.message);
+          }
+      });
+});
+document.querySelector('button[onclick="showPage(\'export\')"]').addEventListener('click', () => {
+    loadTableData(1);
+});
+</script>
+</body>
+</html>

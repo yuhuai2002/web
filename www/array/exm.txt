@@ -1,0 +1,17 @@
+[
+    ["A001", "Laptop", "Electronics", "1200.00", "50"],
+    ["A002", "Smartphone", "Electronics", "800.00", "150"],
+    ["A003", "Headphones", "Electronics", "150.00", "200"],
+    ["A004", "T-Shirt", "Clothing", "25.99", "300"],
+    ["A005", "Jeans", "Clothing", "49.99", "250"],
+    ["A006", "Coffee Maker", "Home Appliances", "79.99", "120"],
+    ["A007", "Blender", "Home Appliances", "45.50", "90"],
+    ["A008", "Chair", "Furniture", "89.00", "60"],
+    ["A009", "Table", "Furniture", "149.99", "40"],
+    ["A010", "Running Shoes", "Footwear", "65.00", "180"],
+    ["A011", "Backpack", "Accessories", "35.00", "220"],
+    ["A012", "Watch", "Accessories", "120.00", "100"],
+    ["A013", "Camera", "Electronics", "450.00", "30"],
+    ["A014", "Mouse", "Electronics", "20.00", "500"],
+    ["A015", "Keyboard", "Electronics", "45.00", "350"]
+]
